@@ -1,0 +1,33 @@
+type User {
+  email: String!
+}
+
+type Item {
+  title: String!
+  prices: [Price] @relation
+}
+
+type Store {
+  title: String!
+  location: String!
+}
+
+type Brand {
+  title: String!
+}
+
+type Price {
+  amount: String!
+  bio: Boolean!
+  brand: Brand!
+  price: String!
+  store: Store!
+  unit: String!
+  item: Item!
+}
+
+type Query {
+  all_items: [Item!]
+  all_prices: [Price!]
+  all_stores: [Store!]
+}
