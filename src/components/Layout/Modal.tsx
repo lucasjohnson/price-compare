@@ -26,7 +26,7 @@ const Modal: React.FC = () => {
 
   return (
     <Context.Consumer>
-      {({ isModalActive, toggleModal }) => (
+      {({ modalActive, toggleModal }) => (
         <Portal>
           <motion.div
             className={css`
@@ -38,13 +38,12 @@ const Modal: React.FC = () => {
               left: 0;
             `}
             initial="closed"
-            animate={isModalActive ? 'open' : 'closed'}
+            animate={modalActive ? 'open' : 'closed'}
             variants={overlayState}
             transition={{ duration: 0.2 }}
           >
-            {isModalActive}
             <ModalElement>
-              <ButtonIcon onClick={toggleModal}>
+              <ButtonIcon onClick={() => toggleModal(null)}>
                 <Icon type={IconType.CROSS} />
               </ButtonIcon>
             </ModalElement>

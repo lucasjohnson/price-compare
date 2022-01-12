@@ -13,7 +13,7 @@ const Header: React.FC<HeaderProps> = ({ title }) => (
     {({ toggleModal }) => (
       <HeaderElement>
         <Heading>{title}</Heading>
-        <ButtonPrimary onClick={toggleModal}>Toggle Modal</ButtonPrimary>
+        <ButtonPrimary>Toggle Modal</ButtonPrimary>
       </HeaderElement>
     )}
   </Context.Consumer>
