@@ -3,4 +3,10 @@ declare module '*.svg' {
   export default content;
 }
 
+declare module 'faunadb' {
+  const content: any;
+  export default content;
+}
+
 declare module 'react-dom';
+declare module 'faunadb/query';
