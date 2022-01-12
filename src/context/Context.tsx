@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { ModalVariant } from '../enums/Index';
-import { graphQL } from '../fauna/graphQL';
+import { Query } from '../fauna/Query';
 
 const defaultState = {
   modalActive: false,
   modalVariant: null,
-  items: [{}],
   toggleModal: (variant: string) => {
     variant;
   },
@@ -18,19 +17,13 @@ const Provider = ({ children }) => {
   const [modalVariant, setModalVariant] = useState<string>(null);
   const [items, setItems] = useState<Array<any>>([]);
 
-  const toggleModal = (
-    variant:
-      | ModalVariant.ADD_ITEM
-      | ModalVariant.DELETE_ITEM
-      | ModalVariant.EDIT_ITEM
-  ): void => {
-    console.log(variant);
+  const toggleModal = (variant: ModalVariant.ADD_ITEM): void => {
     setModalActive(!modalActive);
     setModalVariant(variant);
   };
 
   const returnData = async (): Promise<void> => {
-    const data = await graphQL.getItems();
+    const data = await Query.getItems();
     setItems(data);
   };
 
@@ -43,7 +36,6 @@ const Provider = ({ children }) => {
       value={{
         modalActive,
         modalVariant,
-        items,
         toggleModal,
       }}
     >

@@ -4,6 +4,7 @@ import { css } from '@emotion/css';
 import styled from '@emotion/styled';
 import Context from '../../context/Context';
 import Portal from './Portal';
+import Form from '../Form/Form';
 import Icon from '../Core/Icon';
 import { ButtonIcon } from '../../emotion/Button';
 import { IconType } from '../../enums/Index';
@@ -46,6 +47,7 @@ const Modal: React.FC = () => {
               <ButtonIcon onClick={() => toggleModal(null)}>
                 <Icon type={IconType.CROSS} />
               </ButtonIcon>
+              <Form />
             </ModalElement>
           </motion.div>
         </Portal>
@@ -56,7 +58,7 @@ const Modal: React.FC = () => {
 
 export default Modal;
 
-export const ModalElement = styled.div`
+const ModalElement = styled.div`
   width: 80vw;
   height: 80vh;
   background-color: white;

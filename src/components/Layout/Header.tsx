@@ -1,7 +1,5 @@
 import React from 'react';
-import Context from '../../context/Context';
 import styled from '@emotion/styled';
-import { ButtonPrimary } from '../../emotion/Button';
 import { Heading } from '../../emotion/typography';
 
 interface HeaderProps {
@@ -9,14 +7,9 @@ interface HeaderProps {
 }
 
 const Header: React.FC<HeaderProps> = ({ title }) => (
-  <Context.Consumer>
-    {({ toggleModal }) => (
-      <HeaderElement>
-        <Heading>{title}</Heading>
-        <ButtonPrimary>Toggle Modal</ButtonPrimary>
-      </HeaderElement>
-    )}
-  </Context.Consumer>
+  <HeaderElement>
+    <Heading>{title}</Heading>
+  </HeaderElement>
 );
 
 export default Header;

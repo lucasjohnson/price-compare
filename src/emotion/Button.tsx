@@ -19,5 +19,6 @@ export const ButtonPrimary = styled.button`
   border: none;
   text-align: center;
   padding: 10px 15px;
+  margin: 15px 10px 0 0;
   border-radius: 2px;
 `;
