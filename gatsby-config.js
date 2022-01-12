@@ -1,9 +1,12 @@
+require('dotenv').config({
+  path: `.env.${process.env.NODE_ENV}`,
+});
+
 module.exports = {
   siteMetadata: {
-    title: 'Gatsby Starter',
-    siteUrl: 'https://my-gatsby-starter.vercel.app/',
-    description:
-      'A bare-bones Gatsby TypeScript starter with out of the box SEO optimization.',
+    title: 'Price Compare',
+    siteUrl: 'https://pricecompare.vercel.app',
+    description: '',
     author: 'Lucas Johnson',
     language: 'en',
     banner: {
@@ -22,7 +25,7 @@ module.exports = {
       },
       github: {
         username: 'lucasjohnson',
-        url: 'https://github.com/lucasjohnson/gatsby-starter',
+        url: 'https://github.com/lucasjohnson/price-compare',
         title: 'GitHub',
       },
     },
