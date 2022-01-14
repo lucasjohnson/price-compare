@@ -1,29 +1,48 @@
 import React, { ReactElement, useState } from 'react';
 import Context from '../../context/Context';
-import styled from '@emotion/styled';
+import { FormElement, FormInnerElement } from '../../emotion/Form';
 import AddItem from './Partials/AddItem';
 import { Query } from '../../fauna/Query';
 import { ButtonPrimary } from '../../emotion/Button';
 import { ModalVariant } from '../../enums/Index';
-import { Item } from '../../interfaces/Index';
+import { Item, Price } from '../../interfaces/Index';
+import { PRICE_DATA, ITEM_DATA } from '../../fauna/QueryType';
 
 const Form = (): any => {
-  const itemDefaultData = { title: '' };
-  const [data, setData] = useState<Item>(itemDefaultData);
+  const [itemData, setItemData] = useState<Item>(ITEM_DATA);
+  const [priceData, setpriceData] = useState<Price>(PRICE_DATA);
 
-  const handleInput = (event: MouseEvent): void => {
+  const handleInput = (event: React.ChangeEvent<HTMLInputElement>): void => {
     const input = event.target as HTMLInputElement;
 
-    setData((prev) => ({
+    setItemData((prev) => ({
       ...prev,
       [input.name]: input.value,
+    }));
+  };
+
+  const handlePriceInput = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ): void => {
+    const element = event.target as HTMLInputElement;
+
+    setpriceData((prev) => ({
+      ...prev,
+      [element.name]:
+        element.type === 'checkbox' ? element.checked : element.value,
     }));
   };
 
   const renderForm = (variant: ModalVariant.ADD_ITEM): ReactElement => {
     switch (variant) {
       case ModalVariant.ADD_ITEM:
-        return <AddItem handleInput={handleInput} data={data} />;
+        return (
+          <AddItem
+            handleInput={handleInput}
+            handlePriceInput={handlePriceInput}
+            data={itemData}
+          />
+        );
       default:
         return null;
     }
@@ -35,17 +54,19 @@ const Form = (): any => {
   ): void => {
     event.preventDefault();
     Query.createItem(data);
-    setData(itemDefaultData);
+    setItemData(ITEM_DATA);
   };
 
   return (
     <Context.Consumer>
       {({ modalVariant }) => (
         <FormElement>
-          {renderForm(modalVariant)}
-          <ButtonPrimary onClick={(event) => handleSubmit(event, data)}>
-            Save
-          </ButtonPrimary>
+          <FormInnerElement>
+            {renderForm(modalVariant)}
+            <ButtonPrimary onClick={(event) => handleSubmit(event, itemData)}>
+              Save
+            </ButtonPrimary>
+          </FormInnerElement>
         </FormElement>
       )}
     </Context.Consumer>
@@ -53,7 +74,3 @@ const Form = (): any => {
 };
 
 export default Form;
-
-const FormElement = styled.form`
-  padding: 10px;
-`;

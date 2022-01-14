@@ -9,18 +9,18 @@ import Icon from '../Core/Icon';
 import { ButtonIcon } from '../../emotion/Button';
 import { IconType } from '../../enums/Index';
 
-interface OverlayProps {
+interface OverlayMotionProps {
   visibility: string;
   opacity: number;
 }
 
-interface OverlayState {
-  open: OverlayProps;
-  closed: OverlayProps;
+interface OverlayMotion {
+  open: OverlayMotionProps;
+  closed: OverlayMotionProps;
 }
 
 const Modal: React.FC = () => {
-  const overlayState: OverlayState = {
+  const overlayMotion: OverlayMotion = {
     open: { visibility: `visible`, opacity: 1 },
     closed: { visibility: `hidden`, opacity: 0 },
   };
@@ -40,7 +40,7 @@ const Modal: React.FC = () => {
             `}
             initial="closed"
             animate={modalActive ? 'open' : 'closed'}
-            variants={overlayState}
+            variants={overlayMotion}
             transition={{ duration: 0.2 }}
           >
             <ModalElement>
