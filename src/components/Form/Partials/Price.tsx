@@ -31,16 +31,19 @@ const Price: React.FC<PriceProps> = ({ setUseState }) => {
             label={FieldName.AMOUNT}
           />
           <Select
+            name={FieldName.UNIT.toLowerCase()}
             setUseState={(event) => setUseState(event)}
             items={units}
             label={FieldName.UNIT}
           />
           <Select
+            name={FieldName.STORE.toLowerCase()}
             setUseState={(event) => setUseState(event)}
             items={stores}
             label={FieldName.STORE}
           />
           <Select
+            name={FieldName.BRAND.toLowerCase()}
             setUseState={(event) => setUseState(event)}
             items={brands}
             label={FieldName.BRAND}
@@ -49,7 +52,6 @@ const Price: React.FC<PriceProps> = ({ setUseState }) => {
             name={FieldName.BIO.toLowerCase()}
             label={FieldName.BIO}
             setUseState={(event) => setUseState(event)}
-            value={false}
           />
         </React.Fragment>
       )}

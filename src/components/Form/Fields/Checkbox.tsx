@@ -8,23 +8,16 @@ interface CheckboxProps {
   setUseState: (
     event: React.ChangeEvent<HTMLFormElement | HTMLInputElement>
   ) => void;
-  value?: boolean;
   label?: string;
 }
 
-const Checkbox: React.FC<CheckboxProps> = ({
-  name,
-  setUseState,
-  value,
-  label,
-}) => (
+const Checkbox: React.FC<CheckboxProps> = ({ name, setUseState, label }) => (
   <React.Fragment>
     {label && <LabelElement>{label}</LabelElement>}
     <CheckboxElement
       type={InputType.CHECKBOX}
       name={name}
       onChange={(event) => setUseState(event)}
-      checked={value}
     />
   </React.Fragment>
 );

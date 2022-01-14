@@ -34,7 +34,7 @@ const AddItem: React.FC<AddItemProps> = ({
         name={FieldName.TITLE.toLowerCase()}
         label={FieldName.TITLE}
         type={InputType.TEXT}
-        value={data.title}
+        value={data.name}
       />
       <ButtonText onClick={(event) => togglePrice(event)}>
         <Icon type={IconType.PLUS} />

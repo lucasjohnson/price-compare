@@ -4,7 +4,7 @@ import { FormElement, FormInnerElement } from '../../emotion/Form';
 import AddItem from './Partials/AddItem';
 import { Query } from '../../fauna/Query';
 import { ButtonPrimary } from '../../emotion/Button';
-import { ModalVariant } from '../../enums/Index';
+import { ModalVariant, InputType } from '../../enums/Index';
 import { Item, Price } from '../../interfaces/Index';
 import { PRICE_DATA, ITEM_DATA } from '../../fauna/QueryType';
 
@@ -26,10 +26,12 @@ const Form = (): any => {
   ): void => {
     const element = event.target as HTMLInputElement;
 
+    console.log(element.checked);
+
     setpriceData((prev) => ({
       ...prev,
       [element.name]:
-        element.type === 'checkbox' ? element.checked : element.value,
+        element.type === InputType.CHECKBOX ? element.checked : element.value,
     }));
   };
 

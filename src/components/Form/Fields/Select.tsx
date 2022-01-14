@@ -7,6 +7,7 @@ interface SelectProps {
     event: React.ChangeEvent<HTMLFormElement | HTMLSelectElement>
   ) => void;
   items: Store[];
+  name: string;
   label?: string;
   value?: string;
 }
@@ -14,6 +15,7 @@ interface SelectProps {
 const Select: React.FC<SelectProps> = ({
   setUseState,
   items,
+  name,
   label,
   value,
 }) => {
@@ -24,7 +26,11 @@ const Select: React.FC<SelectProps> = ({
   return (
     <React.Fragment>
       {label && <LabelElement>{label}</LabelElement>}
-      <SelectElement value={value} onChange={(event) => setUseState(event)}>
+      <SelectElement
+        name={name}
+        value={value}
+        onChange={(event) => setUseState(event)}
+      >
         <option value=""></option>
         {options
           .sort((a, b) => a.localeCompare(b))
