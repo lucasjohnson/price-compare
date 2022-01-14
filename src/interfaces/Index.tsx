@@ -1,2 +1,2 @@
 export * from './SiteQuery';
-export * from './DataTypes';
+export * from './DataType';
