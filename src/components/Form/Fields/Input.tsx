@@ -1,16 +1,18 @@
 import React from 'react';
-import styled from '@emotion/styled';
+import { InputElement, LabelElement } from '../../../emotion/Form';
 
-interface Props {
+interface InputProps {
   name: string;
   type: string;
-  setUseState: (event: MouseEvent) => void;
+  setUseState: (
+    event: React.ChangeEvent<HTMLFormElement | HTMLInputElement>
+  ) => void;
   label?: string;
   value?: string;
   placeholder?: string;
 }
 
-const Input: React.FC<Props> = ({
+const Input: React.FC<InputProps> = ({
   name,
   type,
   setUseState,
@@ -19,7 +21,7 @@ const Input: React.FC<Props> = ({
   placeholder,
 }) => (
   <React.Fragment>
-    {label && <label>{label}</label>}
+    {label && <LabelElement>{label}</LabelElement>}
     <InputElement
       type={type}
       name={name}
@@ -32,11 +34,3 @@ const Input: React.FC<Props> = ({
 );
 
 export default Input;
-
-export const InputElement = styled.input`
-  background-color: #fff;
-  color: #000;
-  display: inline-block;
-  padding: 10px 15px;
-  border-radius: 2px;
-`;
