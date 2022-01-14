@@ -17,7 +17,7 @@ export class Query {
       .catch((error) => console.error(error));
   };
 
-  public static getItems = async (): Promise<any> => {
+  public static getData = async (query: string): Promise<any> => {
     return await fetch('https://graphql.fauna.com/graphql', {
       method: 'POST',
       headers: {
@@ -25,21 +25,10 @@ export class Query {
         Authorization: `Bearer ${process.env.FAUNA_CLIENT_SECRET}`,
       },
       body: JSON.stringify({
-        query: `
-          query {
-            all_items {
-              data {
-                _id
-                _ts
-                title
-
-              }
-            }
-          }
-        `,
+        query: query,
       }),
     })
       .then((result) => result.json())
-      .then((result) => result.data.all_items.data);
+      .then((result) => result.data);
   };
 }
