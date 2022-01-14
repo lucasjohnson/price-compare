@@ -2,31 +2,30 @@ import React from 'react';
 import { IconType } from '../../enums/Index';
 import { FaTwitter } from 'react-icons/fa';
 import { GoMarkGithub } from 'react-icons/go';
-import { ImCross } from 'react-icons/im';
+import { ImCross, ImPlus } from 'react-icons/im';
 
 interface IconProps {
-  type: string | IconType.TWITTER | IconType.GITHUB;
+  type:
+    | string
+    | IconType.TWITTER
+    | IconType.GITHUB
+    | IconType.CROSS
+    | IconType.PLUS;
 }
 
 const Icon: React.FC<IconProps> = ({ type }) => {
-  let icon;
-
   switch (type) {
     case IconType.TWITTER:
-      icon = <FaTwitter />;
-      break;
+      return <FaTwitter />;
     case IconType.GITHUB:
-      icon = <GoMarkGithub />;
-      break;
+      return <GoMarkGithub />;
     case IconType.CROSS:
-      icon = <ImCross />;
-      break;
-
+      return <ImCross />;
+    case IconType.PLUS:
+      return <ImPlus />;
     default:
       return null;
   }
-
-  return icon;
 };
 
 export default Icon;
