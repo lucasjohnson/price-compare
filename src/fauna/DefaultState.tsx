@@ -30,6 +30,9 @@ export const CONTEXT_DEFAULT = {
   toggleModal: (variant: string) => {
     variant;
   },
+  returnIndexData: (index: string): void => {
+    index;
+  },
   items: [ITEM_DEFAULT],
   units: [UNIT_DEFAULT],
   brands: [BRAND_DEFAULT],

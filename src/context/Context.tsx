@@ -40,7 +40,7 @@ const Provider = ({ children }) => {
   const [brands, setBrands] = useState<Array<Brand>>([BRAND_DEFAULT]);
   const [stores, setStores] = useState<Array<Store>>([STORE_DEFAULT]);
 
-  const returnAllData = async (index: string): Promise<void> => {
+  const returnIndexData = async (index: string): Promise<void> => {
     switch (index) {
       case IndexQuery.ALL_ITEMS:
         const itemdata = await Query.Post(QUERY_ALL_ITEMS);
@@ -66,7 +66,7 @@ const Provider = ({ children }) => {
   useEffect(() => {
     items.length === 1 &&
       Object.values(IndexQuery).forEach((index) => {
-        returnAllData(index);
+        returnIndexData(index);
       });
   });
 
@@ -76,6 +76,7 @@ const Provider = ({ children }) => {
         modalActive,
         modalVariant,
         toggleModal,
+        returnIndexData,
         items,
         units,
         brands,
