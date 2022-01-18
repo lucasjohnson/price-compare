@@ -1,5 +1,6 @@
 {
   "addItem": "Add Item",
   "addPrice": "Add Price",
-  "save": "Save"
+  "save": "Save",
+  "searchPlaceholder": "Search item"
 }

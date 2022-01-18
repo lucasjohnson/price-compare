@@ -38,3 +38,7 @@ export const CONTEXT_DEFAULT = {
   brands: [BRAND_DEFAULT],
   stores: [STORE_DEFAULT],
 };
+
+export const SEARCH_DEFAULT = {
+  searchTerm: '',
+};

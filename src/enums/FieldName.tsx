@@ -6,4 +6,5 @@ export enum FieldName {
   PRICE = 'Price',
   STORE = 'Store',
   UNIT = 'Unit',
+  SEARCH = 'searchTerm',
 }

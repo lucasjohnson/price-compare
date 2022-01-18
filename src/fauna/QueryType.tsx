@@ -40,6 +40,18 @@ export const QUERY_ALL_ITEMS = `
         _id
         _ts
         name
+        prices {
+          data {
+            _id
+            _ts
+            amount
+            bio
+            brand
+            price
+            store
+            unit
+          }
+        }
       }
     }
   }

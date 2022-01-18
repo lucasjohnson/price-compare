@@ -2,6 +2,9 @@ export interface Item {
   _id?: string;
   _ts?: number;
   name: string;
+  prices?: {
+    data: Price[];
+  };
 }
 
 export interface Brand {
@@ -33,4 +36,12 @@ export interface Price {
   price: string;
   store: string;
   unit: string;
+}
+
+export interface SearchTerm {
+  searchTerm: string;
+}
+
+export interface Result {
+  item: Item;
 }

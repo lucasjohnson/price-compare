@@ -3,6 +3,7 @@ import { useStaticQuery, graphql } from 'gatsby';
 import Context from '../context/Context';
 import { ButtonPrimary } from '../emotion/Button';
 import Layout from '../components/Layout/Layout';
+import SearchForm from '../components/Form/SearchForm';
 import { SiteQuery } from '../interfaces';
 import { ModalVariant } from '../enums/Index';
 import Copy from '../json/copy.json';
@@ -20,8 +21,9 @@ const IndexPage: React.FC = () => {
 
   return (
     <Context.Consumer>
-      {({ toggleModal }) => (
+      {({ toggleModal, items }) => (
         <Layout pageTitle={site.siteMetadata.title}>
+          <SearchForm items={items} />
           <ButtonPrimary onClick={() => toggleModal(ModalVariant.ADD_ITEM)}>
             {Copy.addItem}
           </ButtonPrimary>
