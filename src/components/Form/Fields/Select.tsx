@@ -1,12 +1,12 @@
 import React from 'react';
 import { SelectElement, LabelElement } from '../../../emotion/Form';
-import { Store } from '../../../interfaces/Index';
+import { Store, Brand, Unit } from '../../../interfaces/Index';
 
 interface SelectProps {
   setUseState: (
     event: React.ChangeEvent<HTMLFormElement | HTMLSelectElement>
   ) => void;
-  items: Store[];
+  items: Store[] | Brand[] | Unit[];
   name: string;
   label?: string;
   value?: string;
@@ -19,7 +19,7 @@ const Select: React.FC<SelectProps> = ({
   label,
   value,
 }) => {
-  const options = items.map((item) => {
+  const options = items.map((item: any): string[] => {
     return item.location ? `${item.name} - ${item.location}` : item.name;
   });
 
@@ -33,8 +33,8 @@ const Select: React.FC<SelectProps> = ({
       >
         <option value=""></option>
         {options
-          .sort((a, b) => a.localeCompare(b))
-          .map((item, index) => (
+          .sort((a: string, b: string) => a.localeCompare(b))
+          .map((item: string, index: number) => (
             <option value={item} key={index}>
               {item}
             </option>
