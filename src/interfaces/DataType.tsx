@@ -1,36 +1,36 @@
 export interface Item {
-  name: string;
   _id?: string;
   _ts?: number;
+  name: string;
 }
 
 export interface Brand {
-  name: string;
   _id?: string;
   _ts?: number;
+  name: string;
 }
 
 export interface Unit {
-  name: string;
   _id?: string;
   _ts?: number;
+  name: string;
 }
 
 export interface Store {
-  name: string;
-  location?: string;
   _id?: string;
   _ts?: number;
+  name: string;
+  location: string;
 }
 
 export interface Price {
+  _id?: string;
+  _ts?: number;
   amount: string;
   bio: boolean;
   brand: string;
+  name?: string;
   price: string;
   store: string;
   unit: string;
-  itemId: string;
-  _id?: string;
-  _ts?: number;
 }

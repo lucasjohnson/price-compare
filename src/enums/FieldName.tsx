@@ -1,5 +1,5 @@
 export enum FieldName {
-  TITLE = 'Title',
+  NAME = 'Name',
   AMOUNT = 'Amount',
   BIO = 'Bio',
   BRAND = 'Brand',
