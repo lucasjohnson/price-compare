@@ -2,12 +2,14 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { css } from '@emotion/css';
 import styled from '@emotion/styled';
+import { Subtitle } from '../../emotion/Typography';
 import Context from '../../context/Context';
 import Portal from './Portal';
 import Form from '../Form/Form';
 import Icon from '../Core/Icon';
 import { ButtonIcon } from '../../emotion/Button';
-import { IconType } from '../../enums/Index';
+import { IconType, ModalVariant } from '../../enums/Index';
+import Copy from '../../json/copy.json';
 
 interface OverlayMotionProps {
   visibility: string;
@@ -25,9 +27,18 @@ const Modal: React.FC = () => {
     closed: { visibility: `hidden`, opacity: 0 },
   };
 
+  const renderTitle = (variant: string): any => {
+    switch (variant) {
+      case ModalVariant.ADD_ITEM:
+        return <Subtitle>{Copy.addItem}</Subtitle>;
+      default:
+        return null;
+    }
+  };
+
   return (
     <Context.Consumer>
-      {({ modalActive, toggleModal }) => (
+      {({ modalActive, toggleModal, modalVariant }) => (
         <Portal>
           <motion.div
             className={css`
@@ -44,9 +55,12 @@ const Modal: React.FC = () => {
             transition={{ duration: 0.2 }}
           >
             <ModalElement>
-              <ButtonIcon onClick={() => toggleModal(null)}>
-                <Icon type={IconType.CROSS} />
-              </ButtonIcon>
+              <ModalHeader>
+                {renderTitle(modalVariant)}
+                <ButtonIcon onClick={() => toggleModal(null)}>
+                  <Icon type={IconType.CROSS} />
+                </ButtonIcon>
+              </ModalHeader>
               <Form />
             </ModalElement>
           </motion.div>
@@ -67,4 +81,10 @@ const ModalElement = styled.div`
   left: 50%;
   transform: translate(-50%, -50%);
   padding: 30px;
+`;
+
+const ModalHeader = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
 `;
