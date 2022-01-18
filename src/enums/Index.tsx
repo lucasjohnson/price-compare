@@ -4,3 +4,4 @@ export * from './IconType';
 export * from './InputType';
 export * from './FieldName';
 export * from './IndexQuery';
+export * from './Css';

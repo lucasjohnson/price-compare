@@ -5,6 +5,7 @@ import { ButtonPrimary } from '../emotion/Button';
 import Layout from '../components/Layout/Layout';
 import { SiteQuery } from '../interfaces';
 import { ModalVariant } from '../enums/Index';
+import Copy from '../json/copy.json';
 
 const IndexPage: React.FC = () => {
   const { site } = useStaticQuery<SiteQuery>(graphql`
@@ -22,7 +23,7 @@ const IndexPage: React.FC = () => {
       {({ toggleModal }) => (
         <Layout pageTitle={site.siteMetadata.title}>
           <ButtonPrimary onClick={() => toggleModal(ModalVariant.ADD_ITEM)}>
-            Add Item
+            {Copy.addItem}
           </ButtonPrimary>
         </Layout>
       )}

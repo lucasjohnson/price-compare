@@ -8,6 +8,7 @@ import { ModalVariant, InputType } from '../../enums/Index';
 import { Item, Price } from '../../interfaces/Index';
 import { CREATE_ITEM, CREATE_ITEM_PRICE } from '../../fauna/QueryType';
 import { PRICE_DEFAULT, ITEM_DEFAULT } from '../../fauna/DefaultState';
+import Copy from '../../json/copy.json';
 
 const Form = (): any => {
   const [itemData, setItemData] = useState<Item>(ITEM_DEFAULT);
@@ -87,7 +88,7 @@ const Form = (): any => {
               onClick={(event) => handleSubmit(event)}
               disabled={isFormDisabled}
             >
-              Save
+              {Copy.save}
             </ButtonPrimary>
           </FormInnerElement>
         </FormElement>

@@ -10,3 +10,4 @@ declare module 'faunadb' {
 
 declare module 'react-dom';
 declare module 'faunadb/query';
+declare module '*.json';

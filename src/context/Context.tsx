@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { ModalVariant, IndexQuery } from '../enums/Index';
+import { ModalVariant, IndexQuery, Css } from '../enums/Index';
 import { Item, Unit, Brand, Store } from '../interfaces/Index';
 import { Query } from '../fauna/Query';
 
@@ -25,11 +25,11 @@ const Provider = ({ children }) => {
   const [modalVariant, setModalVariant] = useState<string | null>(null);
 
   const toggleModal = (variant: ModalVariant.ADD_ITEM): void => {
-    const bodyElemnt: HTMLBodyElement = document.querySelector('body');
+    const bodyElemnt: HTMLBodyElement = document.querySelector(Css.BODY);
 
     !modalActive
-      ? (bodyElemnt.style.overflow = 'hidden')
-      : (bodyElemnt.style.overflow = 'auto');
+      ? (bodyElemnt.style.overflow = Css.HIDDEN)
+      : (bodyElemnt.style.overflow = Css.AUTO);
 
     setModalActive(!modalActive);
     setModalVariant(variant);

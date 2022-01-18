@@ -5,6 +5,7 @@ import PriceForm from './PriceForm';
 import { ButtonText, IconText } from '../../../emotion/Button';
 import { InputType, FieldName, IconType } from '../../../enums/Index';
 import { Item, Price } from '../../../interfaces/Index';
+import Copy from '../../../json/copy.json';
 
 interface AddItemProps {
   handleInput: (event: React.ChangeEvent<HTMLInputElement>) => void;
@@ -41,7 +42,7 @@ const AddItem: React.FC<AddItemProps> = ({
       />
       <ButtonText onClick={(event) => togglePrice(event)}>
         <Icon type={IconType.PLUS} />
-        <IconText>Add price</IconText>
+        <IconText>{Copy.addPrice}</IconText>
       </ButtonText>
       {activePrice && (
         <PriceForm setUseState={handlePriceInput} price={price} />
