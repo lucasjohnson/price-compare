@@ -21,6 +21,10 @@ export const ButtonPrimary = styled.button`
   padding: 10px 15px;
   margin: 15px 10px 0 0;
   border-radius: 2px;
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
 `;
 
 export const ButtonText = styled.button`

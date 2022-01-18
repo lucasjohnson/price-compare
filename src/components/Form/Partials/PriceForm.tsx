@@ -4,6 +4,7 @@ import Input from '../Fields/Input';
 import Select from '../Fields/Select';
 import Checkbox from '../Fields/Checkbox';
 import { InputType, FieldName } from '../../../enums/Index';
+import { Price } from '../../../interfaces/Index';
 
 interface PriceProps {
   setUseState: (
@@ -11,9 +12,10 @@ interface PriceProps {
       HTMLFormElement | HTMLSelectElement | HTMLInputElement
     >
   ) => void;
+  price: Price;
 }
 
-const Price: React.FC<PriceProps> = ({ setUseState }) => {
+const PriceForm: React.FC<PriceProps> = ({ setUseState, price }) => {
   return (
     <Context.Consumer>
       {({ units, brands, stores }) => (
@@ -23,35 +25,41 @@ const Price: React.FC<PriceProps> = ({ setUseState }) => {
             type={InputType.TEXT}
             setUseState={(event) => setUseState(event)}
             label={FieldName.PRICE}
+            value={price.price}
           />
           <Input
             name={FieldName.AMOUNT.toLowerCase()}
             type={InputType.TEXT}
             setUseState={(event) => setUseState(event)}
             label={FieldName.AMOUNT}
+            value={price.amount}
           />
           <Select
             name={FieldName.UNIT.toLowerCase()}
             setUseState={(event) => setUseState(event)}
             items={units}
             label={FieldName.UNIT}
+            value={price.unit}
           />
           <Select
             name={FieldName.STORE.toLowerCase()}
             setUseState={(event) => setUseState(event)}
             items={stores}
             label={FieldName.STORE}
+            value={price.store}
           />
           <Select
             name={FieldName.BRAND.toLowerCase()}
             setUseState={(event) => setUseState(event)}
             items={brands}
             label={FieldName.BRAND}
+            value={price.brand}
           />
           <Checkbox
             name={FieldName.BIO.toLowerCase()}
             label={FieldName.BIO}
             setUseState={(event) => setUseState(event)}
+            value={price.bio}
           />
         </React.Fragment>
       )}
@@ -59,4 +67,4 @@ const Price: React.FC<PriceProps> = ({ setUseState }) => {
   );
 };
 
-export default Price;
+export default PriceForm;

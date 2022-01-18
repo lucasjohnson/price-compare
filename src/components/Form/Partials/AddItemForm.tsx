@@ -1,29 +1,32 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Input from '../Fields/Input';
 import Icon from '../../Core/Icon';
-import Price from './Price';
+import PriceForm from './PriceForm';
 import { ButtonText, IconText } from '../../../emotion/Button';
-import { Item } from '../../../interfaces/Index';
 import { InputType, FieldName, IconType } from '../../../enums/Index';
+import { Item, Price } from '../../../interfaces/Index';
 
 interface AddItemProps {
   handleInput: (event: React.ChangeEvent<HTMLInputElement>) => void;
   handlePriceInput: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  data: Item;
+  toggleActivePrice: (activePrice: boolean) => void;
+  activePrice: boolean;
+  item: Item;
+  price: Price;
 }
 
 const AddItem: React.FC<AddItemProps> = ({
   handleInput,
   handlePriceInput,
-  data,
+  toggleActivePrice,
+  activePrice,
+  item,
+  price,
 }) => {
-  const [activePrice, toggleActivePrice] = useState<boolean>(false);
-
   const togglePrice = (
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ): void => {
     event.preventDefault();
-
     toggleActivePrice(!activePrice);
   };
 
@@ -31,16 +34,18 @@ const AddItem: React.FC<AddItemProps> = ({
     <React.Fragment>
       <Input
         setUseState={handleInput}
-        name={FieldName.TITLE.toLowerCase()}
-        label={FieldName.TITLE}
+        name={FieldName.NAME.toLowerCase()}
+        label={FieldName.NAME}
         type={InputType.TEXT}
-        value={data.name}
+        value={item.name}
       />
       <ButtonText onClick={(event) => togglePrice(event)}>
         <Icon type={IconType.PLUS} />
         <IconText>Add price</IconText>
       </ButtonText>
-      {activePrice && <Price setUseState={handlePriceInput} />}
+      {activePrice && (
+        <PriceForm setUseState={handlePriceInput} price={price} />
+      )}
     </React.Fragment>
   );
 };

@@ -1,16 +1,19 @@
-import React, { ReactElement, useState } from 'react';
+import React, { ReactElement, useState, useEffect } from 'react';
 import Context from '../../context/Context';
 import { FormElement, FormInnerElement } from '../../emotion/Form';
-import AddItem from './Partials/AddItem';
+import AddItemForm from './Partials/AddItemForm';
 import { Query } from '../../fauna/Query';
 import { ButtonPrimary } from '../../emotion/Button';
 import { ModalVariant, InputType } from '../../enums/Index';
 import { Item, Price } from '../../interfaces/Index';
-import { PRICE_DATA, ITEM_DATA } from '../../fauna/QueryType';
+import { CREATE_ITEM, CREATE_ITEM_PRICE } from '../../fauna/QueryType';
+import { PRICE_DEFAULT, ITEM_DEFAULT } from '../../fauna/DefaultState';
 
 const Form = (): any => {
-  const [itemData, setItemData] = useState<Item>(ITEM_DATA);
-  const [priceData, setpriceData] = useState<Price>(PRICE_DATA);
+  const [itemData, setItemData] = useState<Item>(ITEM_DEFAULT);
+  const [priceData, setPriceData] = useState<Price>(PRICE_DEFAULT);
+  const [activePrice, toggleActivePrice] = useState<boolean>(false);
+  const [isFormDisabled, setIsFormDisabled] = useState<boolean>(true);
 
   const handleInput = (event: React.ChangeEvent<HTMLInputElement>): void => {
     const input = event.target as HTMLInputElement;
@@ -26,23 +29,30 @@ const Form = (): any => {
   ): void => {
     const element = event.target as HTMLInputElement;
 
-    console.log(element.checked);
-
-    setpriceData((prev) => ({
+    setPriceData((prev) => ({
       ...prev,
       [element.name]:
         element.type === InputType.CHECKBOX ? element.checked : element.value,
     }));
   };
 
+  useEffect(() => {
+    itemData.name.length === 0
+      ? setIsFormDisabled(true)
+      : setIsFormDisabled(false);
+  }, [itemData]);
+
   const renderForm = (variant: ModalVariant.ADD_ITEM): ReactElement => {
     switch (variant) {
       case ModalVariant.ADD_ITEM:
         return (
-          <AddItem
+          <AddItemForm
             handleInput={handleInput}
             handlePriceInput={handlePriceInput}
-            data={itemData}
+            toggleActivePrice={toggleActivePrice}
+            activePrice={activePrice}
+            item={itemData}
+            price={priceData}
           />
         );
       default:
@@ -51,12 +61,20 @@ const Form = (): any => {
   };
 
   const handleSubmit = (
-    event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
-    data: Item
+    event: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ): void => {
     event.preventDefault();
-    Query.createItem(data);
-    setItemData(ITEM_DATA);
+
+    if (activePrice) {
+      priceData.name = itemData.name;
+      Query.Post(CREATE_ITEM_PRICE, priceData);
+      setPriceData(PRICE_DEFAULT);
+      setItemData(ITEM_DEFAULT);
+      toggleActivePrice(false);
+    } else {
+      Query.Post(CREATE_ITEM, itemData);
+      setItemData(ITEM_DEFAULT);
+    }
   };
 
   return (
@@ -65,7 +83,10 @@ const Form = (): any => {
         <FormElement>
           <FormInnerElement>
             {renderForm(modalVariant)}
-            <ButtonPrimary onClick={(event) => handleSubmit(event, itemData)}>
+            <ButtonPrimary
+              onClick={(event) => handleSubmit(event)}
+              disabled={isFormDisabled}
+            >
               Save
             </ButtonPrimary>
           </FormInnerElement>

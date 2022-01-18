@@ -2,19 +2,23 @@ import React, { useState, useEffect } from 'react';
 import { ModalVariant, IndexQuery } from '../enums/Index';
 import { Item, Unit, Brand, Store } from '../interfaces/Index';
 import { Query } from '../fauna/Query';
+
 import {
-  ALL_ITEMS,
-  ALL_UNITS,
-  ALL_BRANDS,
-  ALL_STORES,
-  ITEM_DATA,
-  UNIT_DATA,
-  BRAND_DATA,
-  STORE_DATA,
-  CONTEXT_STATE,
+  QUERY_ALL_ITEMS,
+  QUERY_ALL_UNITS,
+  QUERY_ALL_BRANDS,
+  QUERY_ALL_STORES,
 } from '../fauna/QueryType';
 
-const Context = React.createContext(CONTEXT_STATE);
+import {
+  ITEM_DEFAULT,
+  UNIT_DEFAULT,
+  BRAND_DEFAULT,
+  STORE_DEFAULT,
+  CONTEXT_DEFAULT,
+} from '../fauna/DefaultState';
+
+const Context = React.createContext(CONTEXT_DEFAULT);
 
 const Provider = ({ children }) => {
   const [modalActive, setModalActive] = useState<boolean>(false);
@@ -31,29 +35,28 @@ const Provider = ({ children }) => {
     setModalVariant(variant);
   };
 
-  const [items, setItems] = useState<Array<Item>>([ITEM_DATA]);
-  const [units, setUnits] = useState<Array<Unit>>([UNIT_DATA]);
-  const [brands, setBrands] = useState<Array<Brand>>([BRAND_DATA]);
-  const [stores, setStores] = useState<Array<Store>>([STORE_DATA]);
+  const [items, setItems] = useState<Array<Item>>([ITEM_DEFAULT]);
+  const [units, setUnits] = useState<Array<Unit>>([UNIT_DEFAULT]);
+  const [brands, setBrands] = useState<Array<Brand>>([BRAND_DEFAULT]);
+  const [stores, setStores] = useState<Array<Store>>([STORE_DEFAULT]);
 
-  const returnData = async (index: string): Promise<void> => {
+  const returnAllData = async (index: string): Promise<void> => {
     switch (index) {
       case IndexQuery.ALL_ITEMS:
-        const itemdata = await Query.getData(ALL_ITEMS);
-        setItems(itemdata.all_items.data);
-        console.log(itemdata.all_items.data);
+        const itemdata = await Query.Post(QUERY_ALL_ITEMS);
+        setItems(itemdata[index].data);
         break;
       case IndexQuery.ALL_UNITS:
-        const unitData = await Query.getData(ALL_UNITS);
-        setUnits(unitData.all_units.data);
+        const unitData = await Query.Post(QUERY_ALL_UNITS);
+        setUnits(unitData[index].data);
         break;
       case IndexQuery.ALL_BRANDS:
-        const brandData = await Query.getData(ALL_BRANDS);
-        setBrands(brandData.all_brands.data);
+        const brandData = await Query.Post(QUERY_ALL_BRANDS);
+        setBrands(brandData[index].data);
         break;
       case IndexQuery.ALL_STORES:
-        const storeData = await Query.getData(ALL_STORES);
-        setStores(storeData.all_stores.data);
+        const storeData = await Query.Post(QUERY_ALL_STORES);
+        setStores(storeData[index].data);
         break;
       default:
         null;
@@ -61,9 +64,9 @@ const Provider = ({ children }) => {
   };
 
   useEffect(() => {
-    items[0].name.length === 0 &&
+    items.length === 1 &&
       Object.values(IndexQuery).forEach((index) => {
-        returnData(index);
+        returnAllData(index);
       });
   });
 
