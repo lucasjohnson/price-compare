@@ -1,5 +1,5 @@
 type User {
-  email: String!
+  email: String! @unique
 }
 
 type Item {
@@ -19,11 +19,11 @@ type Brand {
 type Price {
   amount: String!
   bio: Boolean!
-  brand: Brand!
-  price: String!
-  store: Store!
-  unit: String!
+  brand: String
   item: Item!
+  price: String!
+  store: String!
+  unit: String!
 }
 
 type Unit {
