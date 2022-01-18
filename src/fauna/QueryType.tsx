@@ -1,4 +1,39 @@
-export const ALL_ITEMS = `
+export const CREATE_ITEM = `
+  mutation($name: String!){
+    createItem(data: {name: $name}){
+      _id
+      _ts
+      name
+    }
+  }
+`;
+
+export const CREATE_ITEM_PRICE = `
+  mutation($amount: String!, $bio: Boolean!, $brand: String, $name: String!, $price: String!, $store: String!, $unit: String!){
+    createItem(data: {
+      name: $name,
+      prices: {
+        create: {amount: $amount, bio: $bio, brand: $brand, price: $price, store: $store, unit: $unit}
+      }
+    }){
+      _id
+      name
+      prices {
+        data {
+          _id
+          amount
+          bio
+          brand
+          price
+          store
+          unit
+        }
+      }
+    }
+  }
+`;
+
+export const QUERY_ALL_ITEMS = `
   query {
     all_items {
       data {
@@ -10,11 +45,7 @@ export const ALL_ITEMS = `
   }
 `;
 
-export const ITEM_DATA = {
-  name: '',
-};
-
-export const ALL_PRICES = `
+export const QUERY_ALL_PRICES = `
   query {
     all_prices {
       data {
@@ -32,17 +63,7 @@ export const ALL_PRICES = `
   }
 `;
 
-export const PRICE_DATA = {
-  amount: '',
-  bio: false,
-  brand: '',
-  price: '',
-  store: '',
-  unit: '',
-  itemId: '',
-};
-
-export const ALL_STORES = `
+export const QUERY_ALL_STORES = `
   query {
     all_stores {
       data {
@@ -55,12 +76,7 @@ export const ALL_STORES = `
   }
 `;
 
-export const STORE_DATA = {
-  name: '',
-  location: '',
-};
-
-export const ALL_UNITS = `
+export const QUERY_ALL_UNITS = `
   query {
     all_units {
       data {
@@ -72,11 +88,7 @@ export const ALL_UNITS = `
   }
 `;
 
-export const UNIT_DATA = {
-  name: '',
-};
-
-export const ALL_BRANDS = `
+export const QUERY_ALL_BRANDS = `
   query {
     all_brands {
       data {
@@ -87,19 +99,3 @@ export const ALL_BRANDS = `
     }
   }
 `;
-
-export const BRAND_DATA = {
-  name: '',
-};
-
-export const CONTEXT_STATE = {
-  modalActive: false,
-  modalVariant: null,
-  toggleModal: (variant: string) => {
-    variant;
-  },
-  items: [ITEM_DATA],
-  units: [UNIT_DATA],
-  brands: [BRAND_DATA],
-  stores: [STORE_DATA],
-};

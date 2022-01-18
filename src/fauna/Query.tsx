@@ -1,23 +1,8 @@
-import faunadb from 'faunadb';
-const q = faunadb.query;
-
-const client = new faunadb.Client({
-  secret: process.env.FAUNA_CLIENT_SECRET,
-});
-
 export class Query {
-  public static createItem = (data: any): void => {
-    client
-      .query(
-        q.Create(q.Collection('Item'), {
-          data: data,
-        })
-      )
-      .then((response) => console.log(response))
-      .catch((error) => console.error(error));
-  };
-
-  public static getData = async (query: string): Promise<any> => {
+  public static Post = async (
+    query: string,
+    variables?: object
+  ): Promise<any> => {
     return await fetch('https://graphql.fauna.com/graphql', {
       method: 'POST',
       headers: {
@@ -26,6 +11,7 @@ export class Query {
       },
       body: JSON.stringify({
         query: query,
+        variables: variables,
       }),
     })
       .then((result) => result.json())
