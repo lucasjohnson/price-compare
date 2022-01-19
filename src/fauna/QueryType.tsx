@@ -8,6 +8,20 @@ export const CREATE_ITEM = `
   }
 `;
 
+export const CREATE_PRICE = `
+  mutation($amount: String!, $bio: Boolean!, $brand: String! $price: String!, $store: String!, $unit: String!, $itemId: ID!){
+    createPrice(data: {amount: $amount, bio: $bio, brand: $brand, price: $price, store: $store, unit: $unit, item: { connect: $itemId}}){
+      _id
+      amount
+      bio
+      brand
+      price
+      store
+      unit
+    }
+  }
+`;
+
 export const CREATE_ITEM_PRICE = `
   mutation($amount: String!, $bio: Boolean!, $brand: String, $name: String!, $price: String!, $store: String!, $unit: String!){
     createItem(data: {
@@ -37,6 +51,30 @@ export const UPDATE_ITEM = `
   mutation($id: ID!, $name: String!){
     updateItem(id: $id, data: {name: $name}){
       name
+    }
+  }
+`;
+
+export const UPDATE_ITEM_CREATE_PRICE = `
+  mutation($amount: String!, $bio: Boolean!, $brand: String, $id: ID!, $name: String!, $price: String!, $store: String!, $unit: String!){
+    updateItem(id: $id, data: {name: $name,
+      prices: {
+        create: {amount: $amount, bio: $bio, brand: $brand, price: $price, store: $store, unit: $unit}
+      }
+    }){
+      _id
+      name
+      prices {
+        data {
+          _id
+          amount
+          bio
+          brand
+          price
+          store
+          unit
+        }
+      }
     }
   }
 `;

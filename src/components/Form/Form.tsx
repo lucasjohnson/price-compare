@@ -6,15 +6,18 @@ import { Query } from '../../fauna/Query';
 import { ButtonPrimary, ButtonSecondary } from '../../emotion/Button';
 import { ModalVariant, InputType } from '../../enums/Index';
 import { Item, Price } from '../../interfaces/Index';
+import { PRICE_DEFAULT, ITEM_DEFAULT } from '../../fauna/DefaultState';
+import Copy from '../../json/copy.json';
+
 import {
   CREATE_ITEM,
+  CREATE_PRICE,
   CREATE_ITEM_PRICE,
+  UPDATE_ITEM_CREATE_PRICE,
   UPDATE_ITEM,
   DELETE_ITEM,
   DELETE_PRICE,
 } from '../../fauna/QueryType';
-import { PRICE_DEFAULT, ITEM_DEFAULT } from '../../fauna/DefaultState';
-import Copy from '../../json/copy.json';
 
 const Form = (): any => {
   const [itemData, setItemData] = useState<Item>(ITEM_DEFAULT);
@@ -49,44 +52,41 @@ const Form = (): any => {
       : setIsFormDisabled(false);
   }, [itemData]);
 
-  const renderForm = (variant: string): ReactElement => {
-    switch (variant) {
-      case ModalVariant.ADD_ITEM:
-      case ModalVariant.VIEW_ITEM:
-        return (
-          <ItemForm
-            handleInput={handleInput}
-            handlePriceInput={handlePriceInput}
-            toggleActivePrice={toggleActivePrice}
-            activePrice={activePrice}
-            item={itemData}
-            price={priceData}
-            variant={variant}
-          />
-        );
-      default:
-        return null;
-    }
-  };
-
   const handleSubmit = (
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
-    modalVariant?: string
+    modalVariant: string,
+    selectedItem: Item
   ): void => {
     event.preventDefault();
 
-    if (activePrice) {
-      if (modalVariant === ModalVariant.ADD_ITEM)
+    if (modalVariant === ModalVariant.ADD_ITEM) {
+      if (activePrice) {
         priceData.name = itemData.name;
-
-      Query.Post(CREATE_ITEM_PRICE, priceData);
-      setPriceData(PRICE_DEFAULT);
-      setItemData(ITEM_DEFAULT);
-      toggleActivePrice(false);
-    } else {
-      Query.Post(CREATE_ITEM, itemData);
-      setItemData(ITEM_DEFAULT);
+        Query.Post(CREATE_ITEM_PRICE, priceData);
+      } else {
+        Query.Post(CREATE_ITEM, itemData);
+      }
     }
+
+    if (modalVariant === ModalVariant.VIEW_ITEM) {
+      if (activePrice) {
+        if (itemData.name.length > 0) {
+          priceData.name = itemData.name;
+          priceData.id = selectedItem._id;
+          Query.Post(UPDATE_ITEM_CREATE_PRICE, priceData);
+        } else {
+          priceData.itemId = selectedItem._id;
+          Query.Post(CREATE_PRICE, priceData);
+        }
+      } else {
+        itemData.id = selectedItem._id;
+        Query.Post(UPDATE_ITEM, itemData);
+      }
+    }
+
+    setItemData(ITEM_DEFAULT);
+    setPriceData(PRICE_DEFAULT);
+    toggleActivePrice(false);
   };
 
   const handleDelete = async (
@@ -111,10 +111,22 @@ const Form = (): any => {
       {({ modalVariant, selectedItem, toggleModal }) => (
         <FormElement>
           <FormInnerElement>
-            {renderForm(modalVariant)}
+            <ItemForm
+              handleInput={handleInput}
+              handlePriceInput={handlePriceInput}
+              toggleActivePrice={toggleActivePrice}
+              activePrice={activePrice}
+              item={itemData}
+              price={priceData}
+              variant={modalVariant}
+            />
             <ButtonPrimary
-              onClick={(event) => handleSubmit(event, modalVariant)}
-              disabled={isFormDisabled}
+              onClick={(event) =>
+                handleSubmit(event, modalVariant, selectedItem)
+              }
+              disabled={
+                modalVariant === ModalVariant.ADD_ITEM && isFormDisabled
+              }
             >
               {Copy.save}
             </ButtonPrimary>

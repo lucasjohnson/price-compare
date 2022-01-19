@@ -1,6 +1,7 @@
 export interface Item {
   _id?: string;
   _ts?: number;
+  id?: string;
   name: string;
   prices?: {
     data: Price[];
@@ -32,6 +33,8 @@ export interface Price {
   amount: string;
   bio: boolean;
   brand: string;
+  id?: string;
+  itemId?: string;
   name?: string;
   price: string;
   store: string;
