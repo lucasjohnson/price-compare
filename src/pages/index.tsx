@@ -23,7 +23,7 @@ const IndexPage: React.FC = () => {
     <Context.Consumer>
       {({ toggleModal, items }) => (
         <Layout pageTitle={site.siteMetadata.title}>
-          <SearchForm items={items} />
+          <SearchForm items={items} toggleModal={toggleModal} />
           <ButtonPrimary onClick={() => toggleModal(ModalVariant.ADD_ITEM)}>
             {Copy.addItem}
           </ButtonPrimary>

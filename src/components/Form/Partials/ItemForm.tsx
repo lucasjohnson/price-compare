@@ -3,7 +3,12 @@ import Input from '../Fields/Input';
 import Icon from '../../Core/Icon';
 import PriceForm from './PriceForm';
 import { ButtonText, IconText } from '../../../emotion/Button';
-import { InputType, FieldName, IconType } from '../../../enums/Index';
+import {
+  ModalVariant,
+  InputType,
+  FieldName,
+  IconType,
+} from '../../../enums/Index';
 import { Item, Price } from '../../../interfaces/Index';
 import Copy from '../../../json/copy.json';
 
@@ -14,6 +19,7 @@ interface AddItemProps {
   activePrice: boolean;
   item: Item;
   price: Price;
+  variant: string;
 }
 
 const AddItem: React.FC<AddItemProps> = ({
@@ -23,6 +29,7 @@ const AddItem: React.FC<AddItemProps> = ({
   activePrice,
   item,
   price,
+  variant,
 }) => {
   const togglePrice = (
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>
@@ -35,8 +42,12 @@ const AddItem: React.FC<AddItemProps> = ({
     <React.Fragment>
       <Input
         setUseState={handleInput}
-        name={FieldName.NAME.toLowerCase()}
-        label={FieldName.NAME}
+        name={FieldName.NAME}
+        label={
+          variant === ModalVariant.ADD_ITEM
+            ? FieldName.NAME
+            : FieldName.EDIT_NAME
+        }
         type={InputType.TEXT}
         value={item.name}
       />

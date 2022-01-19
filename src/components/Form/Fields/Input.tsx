@@ -24,7 +24,7 @@ const Input: React.FC<InputProps> = ({
     {label && <LabelElement>{label}</LabelElement>}
     <InputElement
       type={type}
-      name={name}
+      name={name.toLowerCase()}
       value={value}
       placeholder={placeholder}
       onChange={(event) => setUseState(event)}

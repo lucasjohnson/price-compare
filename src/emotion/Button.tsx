@@ -27,6 +27,18 @@ export const ButtonPrimary = styled.button`
   }
 `;
 
+export const ButtonSecondary = styled.button`
+  background-color: #fff;
+  color: #ooo;
+  display: inline-block;
+  cursor: pointer;
+  border: 1px solid rgba(0, 0, 0, 0.6);
+  text-align: center;
+  padding: 10px 15px;
+  margin: 15px 10px 0 0;
+  border-radius: 2px;
+`;
+
 export const ButtonText = styled.button`
   background-color: transparent;
   color: #000;

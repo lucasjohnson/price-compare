@@ -1,6 +1,8 @@
 {
-  "addItem": "Add Item",
-  "addPrice": "Add Price",
+  "addItem": "Add item",
+  "addPrice": "Add price",
+  "viewItem": "View item",
   "save": "Save",
+  "deleteItem": "Delete item",
   "searchPlaceholder": "Search item"
 }

@@ -8,6 +8,7 @@ import Portal from './Portal';
 import Form from '../Form/Form';
 import Icon from '../Core/Icon';
 import { ButtonIcon } from '../../emotion/Button';
+import { Item } from '../../interfaces/Index';
 import { IconType, ModalVariant } from '../../enums/Index';
 import Copy from '../../json/copy.json';
 
@@ -27,10 +28,12 @@ const Modal: React.FC = () => {
     closed: { visibility: `hidden`, opacity: 0 },
   };
 
-  const renderTitle = (variant: string): any => {
+  const renderTitle = (variant: string, selectedItem?: Item): any => {
     switch (variant) {
       case ModalVariant.ADD_ITEM:
         return <Subtitle>{Copy.addItem}</Subtitle>;
+      case ModalVariant.VIEW_ITEM:
+        return <Subtitle>{selectedItem.name}</Subtitle>;
       default:
         return null;
     }
@@ -38,7 +41,7 @@ const Modal: React.FC = () => {
 
   return (
     <Context.Consumer>
-      {({ modalActive, toggleModal, modalVariant }) => (
+      {({ modalActive, toggleModal, modalVariant, selectedItem }) => (
         <Portal>
           <motion.div
             className={css`
@@ -56,7 +59,7 @@ const Modal: React.FC = () => {
           >
             <ModalElement>
               <ModalHeader>
-                {renderTitle(modalVariant)}
+                {renderTitle(modalVariant, selectedItem)}
                 <ButtonIcon onClick={() => toggleModal(null)}>
                   <Icon type={IconType.CROSS} />
                 </ButtonIcon>

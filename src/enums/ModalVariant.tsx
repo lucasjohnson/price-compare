@@ -1,5 +1,6 @@
 export enum ModalVariant {
   ADD_ITEM = 'addItem',
-  EDIT_ITEM = 'editItem',
+  VIEW_ITEM = 'viewItem',
   DELETE_ITEM = 'deleteItem',
+  UPDATE_ITEM = 'updateItem',
 }

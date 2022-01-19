@@ -33,6 +33,30 @@ export const CREATE_ITEM_PRICE = `
   }
 `;
 
+export const UPDATE_ITEM = `
+  mutation($id: ID!, $name: String!){
+    updateItem(id: $id, data: {name: $name}){
+      name
+    }
+  }
+`;
+
+export const DELETE_ITEM = `
+  mutation($id: ID!){
+    deleteItem(id: $id){
+      _id
+    }
+  }
+`;
+
+export const DELETE_PRICE = `
+  mutation($id: ID!){
+    deletePrice(id: $id){
+      _id
+    }
+  }
+`;
+
 export const QUERY_ALL_ITEMS = `
   query {
     all_items {
@@ -52,24 +76,6 @@ export const QUERY_ALL_ITEMS = `
             unit
           }
         }
-      }
-    }
-  }
-`;
-
-export const QUERY_ALL_PRICES = `
-  query {
-    all_prices {
-      data {
-        _id
-        _ts
-        amount
-        bio
-        brand
-        price
-        store
-        unit
-        item
       }
     }
   }

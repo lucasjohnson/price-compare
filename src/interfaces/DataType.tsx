@@ -39,7 +39,7 @@ export interface Price {
 }
 
 export interface SearchTerm {
-  searchTerm: string;
+  searchterm: string;
 }
 
 export interface Result {

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { ModalVariant, IndexQuery, Css } from '../enums/Index';
+import { IndexQuery, Css, ModalVariant } from '../enums/Index';
 import { Item, Unit, Brand, Store } from '../interfaces/Index';
 import { Query } from '../fauna/Query';
 
@@ -23,8 +23,10 @@ const Context = React.createContext(CONTEXT_DEFAULT);
 const Provider = ({ children }) => {
   const [modalActive, setModalActive] = useState<boolean>(false);
   const [modalVariant, setModalVariant] = useState<string | null>(null);
+  const [selectedItem, setSelectedItem] = useState<Item>(ITEM_DEFAULT);
+  const [pageLoaded, setPageLoaded] = useState<boolean>(false);
 
-  const toggleModal = (variant: ModalVariant.ADD_ITEM): void => {
+  const toggleModal = (variant: string, item?: Item): void => {
     const bodyElemnt: HTMLBodyElement = document.querySelector(Css.BODY);
 
     !modalActive
@@ -32,7 +34,14 @@ const Provider = ({ children }) => {
       : (bodyElemnt.style.overflow = Css.AUTO);
 
     setModalActive(!modalActive);
-    setModalVariant(variant);
+
+    if (variant === ModalVariant.DELETE_ITEM) {
+      setModalVariant(null);
+      setSelectedItem(ITEM_DEFAULT);
+    } else {
+      item && setSelectedItem(item);
+      setModalVariant(variant);
+    }
   };
 
   const [items, setItems] = useState<Array<Item>>([ITEM_DEFAULT]);
@@ -63,12 +72,17 @@ const Provider = ({ children }) => {
     }
   };
 
+  if (!pageLoaded) {
+    Object.values(IndexQuery).forEach((index) => {
+      returnIndexData(index);
+    });
+
+    setPageLoaded(true);
+  }
+
   useEffect(() => {
-    items.length === 1 &&
-      Object.values(IndexQuery).forEach((index) => {
-        returnIndexData(index);
-      });
-  });
+    modalActive === false && returnIndexData(IndexQuery.ALL_ITEMS);
+  }, [modalActive]);
 
   return (
     <Context.Provider
@@ -81,6 +95,7 @@ const Provider = ({ children }) => {
         units,
         brands,
         stores,
+        selectedItem,
       }}
     >
       {children}

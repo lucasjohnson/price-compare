@@ -37,8 +37,9 @@ export const CONTEXT_DEFAULT = {
   units: [UNIT_DEFAULT],
   brands: [BRAND_DEFAULT],
   stores: [STORE_DEFAULT],
+  selectedItem: ITEM_DEFAULT,
 };
 
 export const SEARCH_DEFAULT = {
-  searchTerm: '',
+  searchterm: '',
 };
