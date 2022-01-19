@@ -2,8 +2,14 @@ import React, { useState, useEffect } from 'react';
 import Fuse from 'fuse.js';
 import styled from '@emotion/styled';
 import Input from './Fields/Input';
+import Icon from '../Core/Icon';
 import { Item, SearchTerm, Result } from '../../interfaces/Index';
-import { ModalVariant, InputType, FieldName } from '../../enums/Index';
+import {
+  ModalVariant,
+  InputType,
+  FieldName,
+  IconType,
+} from '../../enums/Index';
 import { SEARCH_DEFAULT, ITEM_DEFAULT } from '../../fauna/DefaultState';
 import Copy from '../../json/copy.json';
 
@@ -27,12 +33,19 @@ const SearchForm: React.FC<SearchFormProps> = ({ items, toggleModal }) => {
     }));
   };
 
+  const handleModalToggle = (result: Result): void => {
+    toggleModal(ModalVariant.VIEW_ITEM, result.item);
+    clearSearchInput();
+  };
+
+  const clearSearchInput = (): void => {
+    setSearchData(SEARCH_DEFAULT);
+  };
+
   const renderSearchResults = (): HTMLUListElement =>
     searchResults.map((result: Result, key: number) => (
       <li key={key}>
-        <ButtonTrigger
-          onClick={() => toggleModal(ModalVariant.VIEW_ITEM, result.item)}
-        >
+        <ButtonTrigger onClick={() => handleModalToggle(result)}>
           {result.item && result.item!.name}
         </ButtonTrigger>
       </li>
@@ -53,12 +66,20 @@ const SearchForm: React.FC<SearchFormProps> = ({ items, toggleModal }) => {
 
   return (
     <React.Fragment>
-      <Input
-        name={FieldName.SEARCH}
-        type={InputType.TEXT}
-        setUseState={(event) => handleSearch(event)}
-        placeholder={Copy.searchPlaceholder}
-      />
+      <SearchWrapper>
+        <Input
+          name={FieldName.SEARCH}
+          type={InputType.TEXT}
+          setUseState={(event) => handleSearch(event)}
+          placeholder={Copy.searchPlaceholder}
+          value={searchData.searchterm}
+        />
+        {searchData.searchterm.length > 0 && (
+          <ClearButton onClick={clearSearchInput}>
+            <Icon type={IconType.CROSS} />
+          </ClearButton>
+        )}
+      </SearchWrapper>
       <ResultsWrapper>
         <Ul>{searchResults.length > 0 && renderSearchResults()}</Ul>
       </ResultsWrapper>
@@ -71,6 +92,10 @@ export default SearchForm;
 const ResultsWrapper = styled.div`
   position: relative;
   top: -11px;
+`;
+
+const SearchWrapper = styled.div`
+  position: relative;
 `;
 
 const Ul = styled.ul`
@@ -89,4 +114,20 @@ const ButtonTrigger = styled.button`
   text-align: left;
   border: none;
   background-color: transparent;
+`;
+
+const ClearButton = styled.button`
+  width: 25px;
+  height: 25px;
+  color: rgba(0, 0, 0, 0.8);
+  padding: 5px;
+  position: absolute;
+  right: 6px;
+  top: 8px;
+  background-color: transparent;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  border: none;
 `;
