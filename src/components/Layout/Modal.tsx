@@ -41,7 +41,16 @@ const Modal: React.FC = () => {
 
   return (
     <Context.Consumer>
-      {({ modalActive, toggleModal, modalVariant, selectedItem }) => (
+      {({
+        modalActive,
+        itemData,
+        priceData,
+        selectedItem,
+        modalVariant,
+        toggleModal,
+        handleSetItemData,
+        handleSetPriceData,
+      }) => (
         <Portal>
           <motion.div
             className={css`
@@ -64,7 +73,15 @@ const Modal: React.FC = () => {
                   <Icon type={IconType.CROSS} />
                 </ButtonIcon>
               </ModalHeader>
-              <Form />
+              <Form
+                itemData={itemData}
+                priceData={priceData}
+                selectedItem={selectedItem}
+                modalVariant={modalVariant}
+                toggleModal={toggleModal}
+                handleSetItemData={handleSetItemData}
+                handleSetPriceData={handleSetPriceData}
+              />
             </ModalElement>
           </motion.div>
         </Portal>

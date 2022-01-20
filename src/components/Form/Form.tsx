@@ -1,10 +1,9 @@
-import React, { ReactElement, useState, useEffect } from 'react';
-import Context from '../../context/Context';
+import React, { useState, useEffect } from 'react';
 import { FormElement, FormInnerElement } from '../../emotion/Form';
 import ItemForm from './Partials/ItemForm';
 import { Query } from '../../fauna/Query';
 import { ButtonPrimary, ButtonSecondary } from '../../emotion/Button';
-import { ModalVariant, InputType } from '../../enums/Index';
+import { ModalVariant } from '../../enums/Index';
 import { Item, Price } from '../../interfaces/Index';
 import { PRICE_DEFAULT, ITEM_DEFAULT } from '../../fauna/DefaultState';
 import Copy from '../../json/copy.json';
@@ -19,31 +18,46 @@ import {
   DELETE_PRICE,
 } from '../../fauna/QueryType';
 
-const Form = (): any => {
-  const [itemData, setItemData] = useState<Item>(ITEM_DEFAULT);
-  const [priceData, setPriceData] = useState<Price>(PRICE_DEFAULT);
+interface FormProps {
+  itemData: Item;
+  priceData: Price;
+  selectedItem: Item;
+  modalVariant: string;
+  toggleModal: (variant: string) => void;
+  handleSetItemData: (
+    data: Item | null,
+    inputElement?: HTMLInputElement
+  ) => void;
+  handleSetPriceData: (
+    data: Price | null,
+    inputElement?: HTMLInputElement
+  ) => void;
+}
+
+const Form: React.FC<FormProps> = ({
+  itemData,
+  priceData,
+  selectedItem,
+  modalVariant,
+  toggleModal,
+  handleSetItemData,
+  handleSetPriceData,
+}) => {
   const [activePrice, toggleActivePrice] = useState<boolean>(false);
   const [isFormDisabled, setIsFormDisabled] = useState<boolean>(true);
 
   const handleInput = (event: React.ChangeEvent<HTMLInputElement>): void => {
-    const input = event.target as HTMLInputElement;
+    const inputElement = event.target as HTMLInputElement;
 
-    setItemData((prev) => ({
-      ...prev,
-      [input.name]: input.value,
-    }));
+    handleSetItemData(null, inputElement);
   };
 
   const handlePriceInput = (
     event: React.ChangeEvent<HTMLInputElement>
   ): void => {
-    const element = event.target as HTMLInputElement;
+    const inputElement = event.target as HTMLInputElement;
 
-    setPriceData((prev) => ({
-      ...prev,
-      [element.name]:
-        element.type === InputType.CHECKBOX ? element.checked : element.value,
-    }));
+    handleSetPriceData(null, inputElement);
   };
 
   useEffect(() => {
@@ -53,9 +67,7 @@ const Form = (): any => {
   }, [itemData]);
 
   const handleSubmit = (
-    event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
-    modalVariant: string,
-    selectedItem: Item
+    event: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ): void => {
     event.preventDefault();
 
@@ -84,15 +96,13 @@ const Form = (): any => {
       }
     }
 
-    setItemData(ITEM_DEFAULT);
-    setPriceData(PRICE_DEFAULT);
+    handleSetItemData(ITEM_DEFAULT);
+    handleSetPriceData(PRICE_DEFAULT);
     toggleActivePrice(false);
   };
 
   const handleDelete = async (
-    event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
-    selectedItem: Item,
-    toggleModal: (variant: string) => void
+    event: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ): Promise<void> => {
     event.preventDefault();
 
@@ -107,42 +117,30 @@ const Form = (): any => {
   };
 
   return (
-    <Context.Consumer>
-      {({ modalVariant, selectedItem, toggleModal }) => (
-        <FormElement>
-          <FormInnerElement>
-            <ItemForm
-              handleInput={handleInput}
-              handlePriceInput={handlePriceInput}
-              toggleActivePrice={toggleActivePrice}
-              activePrice={activePrice}
-              item={itemData}
-              price={priceData}
-              variant={modalVariant}
-            />
-            <ButtonPrimary
-              onClick={(event) =>
-                handleSubmit(event, modalVariant, selectedItem)
-              }
-              disabled={
-                modalVariant === ModalVariant.ADD_ITEM && isFormDisabled
-              }
-            >
-              {Copy.save}
-            </ButtonPrimary>
-            {modalVariant === ModalVariant.VIEW_ITEM && (
-              <ButtonSecondary
-                onClick={(event) =>
-                  handleDelete(event, selectedItem, toggleModal)
-                }
-              >
-                {Copy.deleteItem}
-              </ButtonSecondary>
-            )}
-          </FormInnerElement>
-        </FormElement>
-      )}
-    </Context.Consumer>
+    <FormElement>
+      <FormInnerElement>
+        <ItemForm
+          handleInput={handleInput}
+          handlePriceInput={handlePriceInput}
+          toggleActivePrice={toggleActivePrice}
+          activePrice={activePrice}
+          item={itemData}
+          price={priceData}
+          variant={modalVariant}
+        />
+        <ButtonPrimary
+          onClick={(event) => handleSubmit(event)}
+          disabled={modalVariant === ModalVariant.ADD_ITEM && isFormDisabled}
+        >
+          {Copy.save}
+        </ButtonPrimary>
+        {modalVariant === ModalVariant.VIEW_ITEM && (
+          <ButtonSecondary onClick={(event) => handleDelete(event)}>
+            {Copy.deleteItem}
+          </ButtonSecondary>
+        )}
+      </FormInnerElement>
+    </FormElement>
   );
 };
 

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { IndexQuery, Css, ModalVariant } from '../enums/Index';
-import { Item, Unit, Brand, Store } from '../interfaces/Index';
+import { IndexQuery, Css, ModalVariant, InputType } from '../enums/Index';
+import { Item, Unit, Brand, Store, Price } from '../interfaces/Index';
 import { Query } from '../fauna/Query';
 
 import {
@@ -16,22 +16,48 @@ import {
   BRAND_DEFAULT,
   STORE_DEFAULT,
   CONTEXT_DEFAULT,
+  PRICE_DEFAULT,
 } from '../fauna/DefaultState';
 
 const Context = React.createContext(CONTEXT_DEFAULT);
 
 const Provider = ({ children }) => {
+  const [itemData, setItemData] = useState<Item>(ITEM_DEFAULT);
+  const [priceData, setPriceData] = useState<Price>(PRICE_DEFAULT);
+  const [selectedItem, setSelectedItem] = useState<Item>(ITEM_DEFAULT);
   const [modalActive, setModalActive] = useState<boolean>(false);
   const [modalVariant, setModalVariant] = useState<string | null>(null);
-  const [selectedItem, setSelectedItem] = useState<Item>(ITEM_DEFAULT);
   const [pageLoaded, setPageLoaded] = useState<boolean>(false);
+
+  const handleSetItemData = (
+    data: Item | null,
+    inputElement?: HTMLInputElement
+  ): void => {
+    inputElement
+      ? setItemData((prev) => ({
+          ...prev,
+          [inputElement.name]: inputElement.value,
+        }))
+      : setItemData(data);
+  };
+
+  const handleSetPriceData = (
+    data: Price | null,
+    inputElement?: HTMLInputElement
+  ): void => {
+    inputElement
+      ? setPriceData((prev) => ({
+          ...prev,
+          [inputElement.name]:
+            inputElement.type === InputType.CHECKBOX
+              ? inputElement.checked
+              : inputElement.value,
+        }))
+      : setPriceData(data);
+  };
 
   const toggleModal = (variant: string, item?: Item): void => {
     const bodyElemnt: HTMLBodyElement = document.querySelector(Css.BODY);
-
-    !modalActive
-      ? (bodyElemnt.style.overflow = Css.HIDDEN)
-      : (bodyElemnt.style.overflow = Css.AUTO);
 
     setModalActive(!modalActive);
 
@@ -41,6 +67,14 @@ const Provider = ({ children }) => {
     } else {
       item && setSelectedItem(item);
       setModalVariant(variant);
+    }
+
+    if (!modalActive) {
+      bodyElemnt.style.overflow = Css.HIDDEN;
+    } else {
+      bodyElemnt.style.overflow = Css.AUTO;
+      setItemData(ITEM_DEFAULT);
+      setPriceData(PRICE_DEFAULT);
     }
   };
 
@@ -89,13 +123,17 @@ const Provider = ({ children }) => {
       value={{
         modalActive,
         modalVariant,
-        toggleModal,
-        returnIndexData,
+        itemData,
+        priceData,
         items,
         units,
         brands,
         stores,
         selectedItem,
+        toggleModal,
+        returnIndexData,
+        handleSetItemData,
+        handleSetPriceData,
       }}
     >
       {children}
